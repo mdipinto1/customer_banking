@@ -1,9 +1,10 @@
 """Imports the SavingsAccount class and attributes from the Account.py file."""
-# ADD YOUR CODE HERE
+from Account import Account
 
 # Define a function for the Savings Account
 def create_savings_account(balance, interest_rate, months):
     """Creates a savings account, calculates interest earned, and updates the account balance.
+    Also performs error handling for cases where a user manually creates an account and provides invalid inputs.
 
     Args:
         balance (float): The initial savings account balance.
@@ -16,19 +17,40 @@ def create_savings_account(balance, interest_rate, months):
     """
     # Create an instance of the `Account` class and pass in the balance and interest parameters.
     #  Hint: You need to add the interest as a value, i.e, 0.
-    # ADD YOUR CODE HERE
+    if (type(balance) == float or type(balance) == int)  and (type(interest_rate) == float or type(interest_rate) == int) and type(months) == int:
+        interest = 0
+        user_account = Account(balance, interest)
 
-    # Calculate interest earned
-     # ADD YOUR CODE HERE
+        # Calculate interest earned
+        interest_earned = balance * ((interest_rate/100)*(months/12))
 
-    # Update the savings account balance by adding the interest earned
-    # ADD YOUR CODE HERE
+        # Update the savings account balance by adding the interest earned
+        updated_balance = user_account.balance + interest_earned
 
-    # Pass the updated_balance to the set balance method using the instance of the SavingsAccount class.
-    # ADD YOUR CODE HERE
+        # Pass the updated_balance to the set balance method using the instance of the SavingsAccount class.
+        user_account.set_balance(updated_balance)
 
-    # Pass the interest_earned to the set interest method using the instance of the SavingsAccount class.
-    # ADD YOUR CODE HERE
+        # Pass the interest_earned to the set interest method using the instance of the SavingsAccount class.
+        user_account.set_interest(interest_earned)
 
-    # Return the updated balance and interest earned.
-    return  # ADD YOUR CODE HERE
+        # Return the updated balance and interest earned.
+        return  user_account.balance, user_account.interest
+    
+    else:
+        error_string = ""
+        if not (type(balance) == float or type(balance) == int):
+            error_string += f"The balance your entered ({balance}) was not a number.\n"
+        if not (type(interest_rate) == float or type(interest_rate) == int):
+            error_string += f"The interest rate you entered ({interest_rate}) was not a number.\n"
+        if not type(months) == int:
+            error_string += f"The term you entered ({months}) was not an integer.\n"
+        #The error string is returned with an additional empty quote to maintain output consistency
+        return error_string, " "
+
+if __name__ == "__main__":
+    # Call the main function.
+    print(create_savings_account(1000, 10, 12))
+    print("Should return 1100, 100\n")
+
+    print(create_savings_account(1000, 'bob', 12))
+    print("Should tell you that your interest rate wasn't a number.")
